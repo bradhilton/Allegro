@@ -2,17 +2,17 @@
 
 `Allegro` is an advanced Swift reflection utility that allows you to create classes and structs at run-time:
 ```swift
-
 struct Person {
    var name: String
    var age: Int
    var friends: [Person]
 }
-
-let person: Person = try constructType { (key, type) in
-  // return value for key
+// Returns fields for Person
+let fields = try fieldsForType(Person)
+// Constructs Person
+let person: Person = try constructType { field in
+  // return value field
 }
-
 ```
 Be aware that every property of the type you'd like to construct must conform to `Property`.
 
