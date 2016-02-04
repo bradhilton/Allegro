@@ -7,16 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A22F90E91C5A9AD7007488DF /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F90E81C5A9AD7007488DF /* Tests.swift */; };
+		A22F90EB1C5A9AD7007488DF /* Allegro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2803DD61C588050009BBEEF /* Allegro.framework */; };
 		A2803DDA1C588050009BBEEF /* Allegro.h in Headers */ = {isa = PBXBuildFile; fileRef = A2803DD91C588050009BBEEF /* Allegro.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A2803DE21C588114009BBEEF /* Allegro.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2803DE11C588114009BBEEF /* Allegro.swift */; };
+		A292F2631C630A2600262B11 /* Allegro.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A292F2621C630A2600262B11 /* Allegro.podspec */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A22F90EC1C5A9AD7007488DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A2803DCD1C588050009BBEEF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A2803DD51C588050009BBEEF;
+			remoteInfo = Allegro;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		A22F90E61C5A9AD7007488DF /* AllegroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllegroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A22F90E81C5A9AD7007488DF /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		A22F90EA1C5A9AD7007488DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2803DD61C588050009BBEEF /* Allegro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Allegro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2803DD91C588050009BBEEF /* Allegro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Allegro.h; sourceTree = "<group>"; };
 		A2803DDB1C588050009BBEEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2803DE11C588114009BBEEF /* Allegro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Allegro.swift; sourceTree = "<group>"; };
+		A292F2621C630A2600262B11 /* Allegro.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Allegro.podspec; sourceTree = "<group>"; };
+		A2D91B561C62DA470041736D /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A22F90E31C5A9AD7007488DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A22F90EB1C5A9AD7007488DF /* Allegro.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2803DD21C588050009BBEEF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -27,11 +55,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A22F90E71C5A9AD7007488DF /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A22F90EA1C5A9AD7007488DF /* Info.plist */,
+				A22F90E81C5A9AD7007488DF /* Tests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		A2803DCC1C588050009BBEEF = {
 			isa = PBXGroup;
 			children = (
-				A2803DD81C588050009BBEEF /* Allegro */,
 				A2803DD71C588050009BBEEF /* Products */,
+				A2803DD81C588050009BBEEF /* Sources */,
+				A22F90E71C5A9AD7007488DF /* Tests */,
+				A292F2621C630A2600262B11 /* Allegro.podspec */,
+				A2D91B561C62DA470041736D /* Package.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -39,17 +79,19 @@
 			isa = PBXGroup;
 			children = (
 				A2803DD61C588050009BBEEF /* Allegro.framework */,
+				A22F90E61C5A9AD7007488DF /* AllegroTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A2803DD81C588050009BBEEF /* Allegro */ = {
+		A2803DD81C588050009BBEEF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				A2803DD91C588050009BBEEF /* Allegro.h */,
+				A2803DE11C588114009BBEEF /* Allegro.swift */,
 				A2803DDB1C588050009BBEEF /* Info.plist */,
 			);
-			path = Allegro;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -66,6 +108,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		A22F90E51C5A9AD7007488DF /* AllegroTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A22F90F01C5A9AD7007488DF /* Build configuration list for PBXNativeTarget "AllegroTests" */;
+			buildPhases = (
+				A22F90E21C5A9AD7007488DF /* Sources */,
+				A22F90E31C5A9AD7007488DF /* Frameworks */,
+				A22F90E41C5A9AD7007488DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A22F90ED1C5A9AD7007488DF /* PBXTargetDependency */,
+			);
+			name = AllegroTests;
+			productName = AllegroTests;
+			productReference = A22F90E61C5A9AD7007488DF /* AllegroTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A2803DD51C588050009BBEEF /* Allegro */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A2803DDE1C588050009BBEEF /* Build configuration list for PBXNativeTarget "Allegro" */;
@@ -90,9 +150,13 @@
 		A2803DCD1C588050009BBEEF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Brad Hilton";
 				TargetAttributes = {
+					A22F90E51C5A9AD7007488DF = {
+						CreatedOnToolsVersion = 7.2;
+					};
 					A2803DD51C588050009BBEEF = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -111,31 +175,79 @@
 			projectRoot = "";
 			targets = (
 				A2803DD51C588050009BBEEF /* Allegro */,
+				A22F90E51C5A9AD7007488DF /* AllegroTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A2803DD41C588050009BBEEF /* Resources */ = {
+		A22F90E41C5A9AD7007488DF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A2803DD41C588050009BBEEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A292F2631C630A2600262B11 /* Allegro.podspec in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A22F90E21C5A9AD7007488DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A22F90E91C5A9AD7007488DF /* Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2803DD11C588050009BBEEF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2803DE21C588114009BBEEF /* Allegro.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		A22F90ED1C5A9AD7007488DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A2803DD51C588050009BBEEF /* Allegro */;
+			targetProxy = A22F90EC1C5A9AD7007488DF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		A22F90EE1C5A9AD7007488DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradhilton.AllegroTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A22F90EF1C5A9AD7007488DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradhilton.AllegroTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		A2803DDC1C588050009BBEEF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -228,27 +340,30 @@
 		A2803DDF1C588050009BBEEF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Allegro/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bradhilton.Allegro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		A2803DE01C588050009BBEEF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Allegro/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bradhilton.Allegro;
@@ -260,6 +375,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A22F90F01C5A9AD7007488DF /* Build configuration list for PBXNativeTarget "AllegroTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A22F90EE1C5A9AD7007488DF /* Debug */,
+				A22F90EF1C5A9AD7007488DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A2803DD01C588050009BBEEF /* Build configuration list for PBXProject "Allegro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -276,6 +400,7 @@
 				A2803DE01C588050009BBEEF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
