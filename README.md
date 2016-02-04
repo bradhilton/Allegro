@@ -11,7 +11,7 @@ struct Person {
 let fields = try fieldsForType(Person)
 // Constructs Person
 let person: Person = try constructType { field in
-  // return value field
+  // return value for field
 }
 ```
 Be aware that every property of the type you'd like to construct must conform to `Property`.
