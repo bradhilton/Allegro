@@ -8,6 +8,14 @@
 use_frameworks!
 pod 'Allegro'
 ```
+`Allegro` is also available through [Carthage](https://github.com/Carthage/Carthage). Just add the following to your cartfile:
+```
+github "bradhilton/Allegro"
+```
+You can also build `Allegro` using the Swift Package Manager. Just include Allegro as a package in your dependencies:
+```
+.Package(url: "https://github.com/bradhilton/Allegro.git", majorVersion: 1)
+```
 Be sure to import the module at the top of your .swift files:
 ```swift
 import Allegro
