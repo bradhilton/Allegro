@@ -12,7 +12,7 @@ pod 'Allegro'
 ```
 github "bradhilton/Allegro"
 ```
-You can also build `Allegro` using the [Swift Package Manager](https://github.com/apple/swift-package-manager). Just include Allegro as a package in your dependencies:
+You can also build `Allegro` using the [Swift Package Manager](https://github.com/apple/swift-package-manager). Just include `Allegro` as a package in your dependencies:
 ```
 .Package(url: "https://github.com/bradhilton/Allegro.git", majorVersion: 1)
 ```
@@ -32,6 +32,6 @@ Brad Hilton, brad@skyvive.com
 
 ## License
 
-Allegro is available under the MIT license. See the LICENSE file for more info.
+`Allegro` is available under the MIT license. See the LICENSE file for more info.
 
 
