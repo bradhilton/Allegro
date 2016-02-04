@@ -8,13 +8,11 @@
 
 public protocol Property {}
 
-public typealias Constructor = (key: String, type: Property.Type) throws -> Property
-
-public func constructType<T>(constructor: Constructor) throws -> T {
+public func constructType<T>(constructor: Field throws -> Property) throws -> T {
     let pointer = UnsafeMutablePointer<T>.alloc(1)
     var words = getWords(pointer)
     var values = [Any]()
-    try constructType(&words, values: &values, fields: fields(T.self), constructor: constructor)
+    try constructType(&words, values: &values, fields: fieldsForType(T.self), constructor: constructor)
     return pointer.memory
 }
 
@@ -33,18 +31,19 @@ func getWords<T>(pointer: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<Int> 
     return UnsafeMutablePointer(pointer)
 }
 
-private func constructType(inout words: UnsafeMutablePointer<Int>, inout values: [Any], fields: [Field], constructor: Constructor) throws {
+private func constructType(inout words: UnsafeMutablePointer<Int>, inout values: [Any], fields: [Field], constructor: Field throws -> Property) throws {
     for field in fields {
-        var value = try constructor(key: field.name, type: field.type)
-        guard field.type.isTypeOfValue(value) else { throw Error.ValueIsNotType(value: value, type: field.type) }
+        var value = try constructor(field)
+        guard let type = field.type as? Property.Type else { throw Error.NotProperty(type: field.type) }
+        guard type.isTypeOfValue(value) else { throw Error.ValueIsNotType(value: value, type: field.type) }
         values.append(value)
         appendWords(&words, words: value.words())
     }
 }
 
-private struct Field {
-    let name: String
-    let type: Property.Type
+public struct Field {
+    public let name: String
+    public let type: Any.Type
     init(name: String, metadataPointer: UnsafePointer<Int>) throws {
         self.name = name
         self.type = try constructPropertyType(metadataPointer)
@@ -68,13 +67,13 @@ private func wordsize(size: Int) -> Int {
     return (size / sizeof(Int)) + (size % sizeof(Int) == 0 ? 0 : 1)
 }
 
-private func fields<T>(type: T.Type) throws -> [Field] {
-    return T.self is AnyClass ? try fields(type, offset: sizeof(Int) == 8 ? 8 : 11, condition: { $0 > 4096 }) : try fields(type, offset: 1, condition: { $0 == 1 })
+public func fieldsForType(type: Any.Type) throws -> [Field] {
+    return type is AnyClass ? try fields(type, offset: sizeof(Int) == 8 ? 8 : 11, condition: { $0 > 4096 }) : try fields(type, offset: 1, condition: { $0 == 1 })
 }
 
-private func fields<T>(type: T.Type, offset: Int, condition: Int -> Bool) throws -> [Field] {
-    var copy: Any = T.self
-    guard condition(memory(&copy, 0, 0) as Int) else { throw Error.NotClassOrStruct(type: T.self) }
+private func fields(type: Any.Type, offset: Int, condition: Int -> Bool) throws -> [Field] {
+    var copy: Any = type
+    guard condition(memory(&copy, 0, 0) as Int) else { throw Error.NotClassOrStruct(type: type) }
     let numberOfFields = Int(memory(&copy, 0, offset, 2) as Int8)
     let names = fieldNames(memory(&copy, 0, offset, 3), numberOfFields: numberOfFields)
     let pointers = fieldPointers(memory(&copy, 0, offset, 4), pointer: memory(&copy, 0), numberOfFields: numberOfFields)
@@ -98,12 +97,11 @@ private func fieldPointers(function: FieldTypesFunction?, pointer: UnsafePointer
     return (0..<numberOfFields).map { function(pointer).advancedBy($0).memory }
 }
 
-private func constructPropertyType(metadataPointer: UnsafePointer<Int>) throws -> Property.Type {
+private func constructPropertyType(metadataPointer: UnsafePointer<Int>) throws -> Any.Type {
     let pointer = UnsafeMutablePointer<Any.Type>.alloc(1)
     let intPointer = UnsafeMutablePointer<Int>(pointer)
     intPointer.memory = metadataPointer.hashValue
-    guard let propertyType = pointer.memory as? Property.Type else { throw Error.NotProperty(type: pointer.memory) }
-    return propertyType
+    return pointer.memory
 }
 
 private func appendWords(inout pointer: UnsafeMutablePointer<Int>, words: [Int]) {
