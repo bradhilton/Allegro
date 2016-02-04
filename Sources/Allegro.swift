@@ -36,7 +36,7 @@ func getWords<T>(pointer: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<Int> 
 private func constructType(inout words: UnsafeMutablePointer<Int>, inout values: [Any], fields: [Field], constructor: Constructor) throws {
     for field in fields {
         var value = try constructor(key: field.name, type: field.type)
-        guard field.type.isTypeOfValue(value) else { throw Error(description: "\(value.dynamicType) is not \(field.type)") }
+        guard field.type.isTypeOfValue(value) else { throw Error.ValueIsNotType(value: value, type: field.type) }
         values.append(value)
         appendWords(&words, words: value.words())
     }
@@ -74,7 +74,7 @@ private func fields<T>(type: T.Type) throws -> [Field] {
 
 private func fields<T>(type: T.Type, offset: Int, condition: Int -> Bool) throws -> [Field] {
     var copy: Any = T.self
-    guard condition(memory(&copy, 0, 0) as Int) else { throw Error(description: "Type \(T.self) must be a class or struct") }
+    guard condition(memory(&copy, 0, 0) as Int) else { throw Error.NotClassOrStruct(type: T.self) }
     let numberOfFields = Int(memory(&copy, 0, offset, 2) as Int8)
     let names = fieldNames(memory(&copy, 0, offset, 3), numberOfFields: numberOfFields)
     let pointers = fieldPointers(memory(&copy, 0, offset, 4), pointer: memory(&copy, 0), numberOfFields: numberOfFields)
@@ -102,7 +102,7 @@ private func constructPropertyType(metadataPointer: UnsafePointer<Int>) throws -
     let pointer = UnsafeMutablePointer<Any.Type>.alloc(1)
     let intPointer = UnsafeMutablePointer<Int>(pointer)
     intPointer.memory = metadataPointer.hashValue
-    guard let propertyType = pointer.memory as? Property.Type else { throw Error(description: "\(pointer.memory) does not conform to Allegro.Property") }
+    guard let propertyType = pointer.memory as? Property.Type else { throw Error.NotProperty(type: pointer.memory) }
     return propertyType
 }
 
@@ -113,8 +113,23 @@ private func appendWords(inout pointer: UnsafeMutablePointer<Int>, words: [Int])
     }
 }
 
-public struct Error : ErrorType, CustomStringConvertible {
-    public let description: String
+public enum Error : ErrorType, CustomStringConvertible {
+    
+    case NotClassOrStruct(type: Any.Type)
+    case NotProperty(type: Any.Type)
+    case ValueIsNotType(value: Any, type: Any.Type)
+    
+    public var description: String {
+        return "Allegro Error: \(caseDescription)"
+    }
+    
+    var caseDescription: String {
+        switch self {
+        case .NotClassOrStruct(type: let type): return "\(type) is not a class or struct"
+        case .NotProperty(type: let type): return "\(type) does not conform to Property"
+        case .ValueIsNotType(value: let value, type: let type): return "Cannot set value of type \(value.dynamicType) as \(type)"
+        }
+    }
 }
 
 private func memory<T, U>(inout memory: T, _ path: Int...) -> U {
