@@ -37,7 +37,9 @@ class Tests: XCTestCase {
     func testExample() {
         measureBlock {
             do {
-                let person: Person = try constructType { (["firstName" : "Brad", "lastName": "Hilton", "age": 27, "base": Base()] as [String : Property])[$0.name]! }
+                let person: Person = try constructType {
+                    (["firstName" : "Brad", "lastName": "Hilton", "age": 27, "base": Base()] as [String : Property])[$0.name]!
+                }
                 let other = Person(firstName: "Brad", lastName: "Hilton", age: 27, base: Base())
                 XCTAssert(person == other)
             } catch {

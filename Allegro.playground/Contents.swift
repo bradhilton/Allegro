@@ -1,5 +1,11 @@
 import Allegro
 
-if let fields = try? fieldsForType(String) {
+struct Object {
+    
+    lazy var string = "Brad"
+    
+}
+
+if let fields = try? fieldsForType(Object) {
     dump(fields)
 }

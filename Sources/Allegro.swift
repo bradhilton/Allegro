@@ -6,6 +6,10 @@
 //  Copyright © 2016 Brad Hilton. All rights reserved.
 //
 
+private var _64bit: Bool {
+    return sizeof(Int) == 8
+}
+
 public protocol Property {}
 
 public func constructType<T>(constructor: Field throws -> Property) throws -> T {
@@ -42,13 +46,23 @@ private func constructType(inout words: UnsafeMutablePointer<Int>, inout values:
 }
 
 public struct Field {
+    
     public let name: String
     public let type: Any.Type
+    
     init(name: String, metadataPointer: UnsafePointer<Int>) throws {
         self.name = name
         self.type = try constructPropertyType(metadataPointer)
     }
+    
+    public struct Instance {
+        public let name: String
+        public let value: Any
+    }
+    
 }
+
+
 
 extension Property {
     
@@ -68,15 +82,15 @@ private func wordsize(size: Int) -> Int {
 }
 
 public func fieldsForType(type: Any.Type) throws -> [Field] {
-    return type is AnyClass ? try fields(type, offset: sizeof(Int) == 8 ? 8 : 11, condition: { $0 > 4096 }) : try fields(type, offset: 1, condition: { $0 == 1 })
+    return type is AnyClass ? try fields(type, offset: _64bit ? 8 : 11, condition: { $0 > 4096 }) : try fields(type, offset: 1, condition: { $0 == 1 })
 }
 
 private func fields(type: Any.Type, offset: Int, condition: Int -> Bool) throws -> [Field] {
     var copy: Any = type
     guard condition(memory(&copy, 0, 0) as Int) else { throw Error.NotClassOrStruct(type: type) }
     let numberOfFields = Int(memory(&copy, 0, offset, 2) as Int8)
-    let names = fieldNames(memory(&copy, 0, offset, 3), numberOfFields: numberOfFields)
-    let pointers = fieldPointers(memory(&copy, 0, offset, 4), pointer: memory(&copy, 0), numberOfFields: numberOfFields)
+    let names = fieldNames(memory(&copy, 0, offset, _64bit ? 3 : 4), numberOfFields: numberOfFields)
+    let pointers = fieldPointers(memory(&copy, 0, offset, _64bit ? 4 : 5), pointer: memory(&copy, 0), numberOfFields: numberOfFields)
     return try (0..<numberOfFields).map { try Field(name: names[$0], metadataPointer: pointers[$0])}
 }
 
