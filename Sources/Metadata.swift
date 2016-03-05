@@ -89,12 +89,12 @@ struct Metadata : MetadataType {
     enum Kind {
         case Struct
         case Class
-        case Unknown
+        case Other
         init(flag: Int) {
             switch flag {
             case 1: self = .Struct
             case let x where x > 4096: self = .Class
-            default: self = .Unknown
+            default: self = .Other
             }
         }
     }
@@ -134,7 +134,7 @@ struct Metadata : MetadataType {
         }
         
         var nominalTypeDescriptor: NominalTypeDescriptor {
-            return NominalTypeDescriptor(pointer: UnsafePointer(bitPattern: pointer[8]))
+            return NominalTypeDescriptor(pointer: UnsafePointer(bitPattern: pointer[is64BitPlatform ? 8 : 11]))
         }
         
     }
@@ -177,7 +177,7 @@ struct NominalTypeDescriptor {
     }
     
     var fieldNames: [String] {
-        var pointer = UnsafePointer<CChar>(bitPattern: self.pointer[3])
+        var pointer = UnsafePointer<CChar>(bitPattern: self.pointer[is64BitPlatform ? 3 : 4])
         return (0..<numberOfFields).map { _ in
             defer {
                 while pointer.memory != 0 {
@@ -192,7 +192,7 @@ struct NominalTypeDescriptor {
     typealias FieldsTypeAccessor = @convention(c) UnsafePointer<Int> -> UnsafePointer<UnsafePointer<Int>>
     
     var fieldTypesAccessor: FieldsTypeAccessor? {
-        return UnsafePointer<FieldsTypeAccessor?>(pointer.advancedBy(4)).memory
+        return UnsafePointer<FieldsTypeAccessor?>(pointer.advancedBy(is64BitPlatform ? 4 : 5)).memory
     }
     
 }

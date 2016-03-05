@@ -32,14 +32,6 @@ func bufferForInstance(inout instance: Any) -> UnsafeBufferPointer<Int> {
     return UnsafeBufferPointer(start: pointer, count: length)
 }
 
-extension UnsafeMutableBufferPointer {
-    
-    mutating func consumeBuffer(buffer: UnsafeBufferPointer<Int>) {
-        
-    }
-    
-}
-
 extension UnsafeMutablePointer {
     
     mutating func consumeBuffer(buffer: UnsafeBufferPointer<Int>) {

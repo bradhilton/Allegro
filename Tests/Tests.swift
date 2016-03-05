@@ -9,20 +9,18 @@
 import XCTest
 import Allegro
 
-class Person : Equatable {
+struct Person : Equatable {
     
     var firstName: String
     var lastName: String
     var age: Int
-    var base: Base
     
-    init(firstName: String, lastName: String, age: Int, base: Base) {
+    init(firstName: String, lastName: String, age: Int) {
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
-        self.base = base
     }
-    
+
 }
 
 class Base {}
@@ -36,12 +34,12 @@ func ==(lhs: Person, rhs: Person) -> Bool {
 class Tests: XCTestCase {
     
     func testExample() {
-        measureBlock {
+        for _ in 0..<100000 {
             do {
                 let person: Person = try constructType {
-                    (["firstName" : "Brad", "lastName": "Hilton", "age": 27, "base": Base()] as [String : Any])[$0.name]!
+                    (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
                 }
-                let other = Person(firstName: "Brad", lastName: "Hilton", age: 27, base: Base())
+                let other = Person(firstName: "Brad", lastName: "Hilton", age: 27)
                 XCTAssert(person == other)
             } catch {
                 XCTFail(String(error))
