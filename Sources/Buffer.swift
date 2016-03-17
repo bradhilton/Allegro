@@ -20,16 +20,15 @@ extension UnsafePointer : Advancable {}
 extension UnsafeMutablePointer : Advancable {}
 
 func bufferForInstance(inout instance: Any) -> UnsafeBufferPointer<Int> {
-    let size = Metadata(type: instance.dynamicType).valueWitnessTable.size
-    let length = (size / sizeof(Int)) + (size % sizeof(Int) == 0 ? 0 : 1)
+    let size = wordSizeForType(instance.dynamicType)
     let pointer: UnsafePointer<Int> = withUnsafePointer(&instance) { pointer in
-        if length <= 3 {
+        if size <= 3 {
             return UnsafePointer<Int>(pointer)
         } else {
             return UnsafePointer<Int>(bitPattern: UnsafePointer<Int>(pointer)[0])
         }
     }
-    return UnsafeBufferPointer(start: pointer, count: length)
+    return UnsafeBufferPointer(start: pointer, count: size)
 }
 
 extension UnsafeMutablePointer {
@@ -43,4 +42,9 @@ extension UnsafeMutablePointer {
         self = UnsafeMutablePointer(pointer)
     }
     
+}
+
+func wordSizeForType(type: Any.Type) -> Int {
+    let size = Metadata(type: type).valueWitnessTable.size
+    return (size / sizeof(Int)) + (size % sizeof(Int) == 0 ? 0 : 1)
 }

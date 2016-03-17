@@ -11,6 +11,11 @@
 		A22F90EB1C5A9AD7007488DF /* Allegro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2803DD61C588050009BBEEF /* Allegro.framework */; };
 		A231F5DA1C89ECE700ECD18E /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = A231F5D91C89ECE700ECD18E /* Metadata.swift */; };
 		A231F5DC1C89F5DB00ECD18E /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A231F5DB1C89F5DB00ECD18E /* Buffer.swift */; };
+		A25A6D3F1C9A4C44004A9E00 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25A6D3E1C9A4C44004A9E00 /* Error.swift */; };
+		A25A6D411C9B40C1004A9E00 /* ValueSetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25A6D401C9B40C1004A9E00 /* ValueSetters.swift */; };
+		A25A6D431C9B40DF004A9E00 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25A6D421C9B40DF004A9E00 /* Storage.swift */; };
+		A25A6D451C9B4153004A9E00 /* ValueGetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25A6D441C9B4153004A9E00 /* ValueGetters.swift */; };
+		A25A6D471C9B45DE004A9E00 /* TypeConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25A6D461C9B45DE004A9E00 /* TypeConstructor.swift */; };
 		A2803DDA1C588050009BBEEF /* Allegro.h in Headers */ = {isa = PBXBuildFile; fileRef = A2803DD91C588050009BBEEF /* Allegro.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A2803DE21C588114009BBEEF /* Allegro.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2803DE11C588114009BBEEF /* Allegro.swift */; };
 		A292F2631C630A2600262B11 /* Allegro.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A292F2621C630A2600262B11 /* Allegro.podspec */; };
@@ -32,6 +37,11 @@
 		A22F90EA1C5A9AD7007488DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A231F5D91C89ECE700ECD18E /* Metadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		A231F5DB1C89F5DB00ECD18E /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
+		A25A6D3E1C9A4C44004A9E00 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		A25A6D401C9B40C1004A9E00 /* ValueSetters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueSetters.swift; sourceTree = "<group>"; };
+		A25A6D421C9B40DF004A9E00 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		A25A6D441C9B4153004A9E00 /* ValueGetters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueGetters.swift; sourceTree = "<group>"; };
+		A25A6D461C9B45DE004A9E00 /* TypeConstructor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeConstructor.swift; sourceTree = "<group>"; };
 		A2803DD61C588050009BBEEF /* Allegro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Allegro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2803DD91C588050009BBEEF /* Allegro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Allegro.h; sourceTree = "<group>"; };
 		A2803DDB1C588050009BBEEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,9 +103,14 @@
 			children = (
 				A2803DD91C588050009BBEEF /* Allegro.h */,
 				A2803DE11C588114009BBEEF /* Allegro.swift */,
+				A25A6D401C9B40C1004A9E00 /* ValueSetters.swift */,
+				A25A6D441C9B4153004A9E00 /* ValueGetters.swift */,
 				A231F5D91C89ECE700ECD18E /* Metadata.swift */,
 				A231F5DB1C89F5DB00ECD18E /* Buffer.swift */,
+				A25A6D3E1C9A4C44004A9E00 /* Error.swift */,
 				A2803DDB1C588050009BBEEF /* Info.plist */,
+				A25A6D421C9B40DF004A9E00 /* Storage.swift */,
+				A25A6D461C9B45DE004A9E00 /* TypeConstructor.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -217,9 +232,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A25A6D471C9B45DE004A9E00 /* TypeConstructor.swift in Sources */,
+				A25A6D3F1C9A4C44004A9E00 /* Error.swift in Sources */,
 				A231F5DA1C89ECE700ECD18E /* Metadata.swift in Sources */,
 				A2803DE21C588114009BBEEF /* Allegro.swift in Sources */,
+				A25A6D451C9B4153004A9E00 /* ValueGetters.swift in Sources */,
 				A231F5DC1C89F5DB00ECD18E /* Buffer.swift in Sources */,
+				A25A6D411C9B40C1004A9E00 /* ValueSetters.swift in Sources */,
+				A25A6D431C9B40DF004A9E00 /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,8 +33,8 @@ func ==(lhs: Person, rhs: Person) -> Bool {
 
 class Tests: XCTestCase {
     
-    func testExample() {
-        for _ in 0..<100000 {
+    func testConstructType() {
+        for _ in 0..<1000 {
             do {
                 let person: Person = try constructType {
                     (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
@@ -44,6 +44,47 @@ class Tests: XCTestCase {
             } catch {
                 XCTFail(String(error))
             }
+        }
+    }
+    
+    func testPropertiesForInstance() {
+        var properties = [Property]()
+        do {
+            let person = Person(firstName: "Brad", lastName: "Hilton", age: 27)
+            properties = try propertiesForInstance(person)
+            guard properties.count == 3 else {
+                XCTFail("Unexpected number of properties"); return
+            }
+            guard let firstName = properties[0].value as? String, let lastName = properties[1].value as? String, let age = properties[2].value as? Int else {
+                XCTFail("Unexpected properties"); return
+            }
+            XCTAssert(person.firstName == firstName)
+            XCTAssert(person.lastName == lastName)
+            XCTAssert(person.age == age)
+        } catch {
+            XCTFail(String(error))
+        }
+        print(properties)
+    }
+    
+    func testSetValueForKeyOfInstance() {
+        do {
+            var person = Person(firstName: "Brad", lastName: "Hilton", age: 27)
+            try Allegro.setValue("Lawrence", forKey: "firstName", ofInstance: &person)
+            XCTAssert(person.firstName == "Lawrence")
+        } catch {
+            XCTFail(String(error))
+        }
+
+    }
+    
+    func testValueForKeyOfInstance() {
+        do {
+            let person = Person(firstName: "Brad", lastName: "Hilton", age: 29)
+            let firstName: String = try Allegro.valueForKey("firstName", ofInstance: person)
+            XCTAssert(person.firstName == firstName)
+        } catch {
+            XCTFail(String(error))
         }
     }
     
