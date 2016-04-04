@@ -7,7 +7,7 @@
 //
 
 public func constructType<T>(constructor: Field throws -> Any) throws -> T {
-    guard Metadata.Struct(type: T.self) != nil else { throw Error.NotStruct(type: T.self) }
+    guard Metadata(type: T.self)?.kind == .Struct else { throw Error.NotStruct(type: T.self) }
     let pointer = UnsafeMutablePointer<T>.alloc(1)
     defer { pointer.dealloc(1) }
     var storage = UnsafeMutablePointer<Int>(pointer)
@@ -19,9 +19,7 @@ public func constructType<T>(constructor: Field throws -> Any) throws -> T {
 private func constructType(inout storage: UnsafeMutablePointer<Int>, inout values: [Any], fields: [Field], constructor: Field throws -> Any) throws {
     for field in fields {
         var value = try constructor(field)
-        guard instanceValue(value, isOfType: field.type) else {
-            throw Error.ValueIsNotOfType(value: value, type: field.type)
-        }
+        guard instanceValue(value, isOfType: field.type) else { throw Error.ValueIsNotOfType(value: value, type: field.type) }
         values.append(value)
         storage.consumeBuffer(bufferForInstance(&value))
     }

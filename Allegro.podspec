@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Allegro"
-  s.version      = "1.1.0"
+  s.version      = "1.1.1"
   s.summary      = "Dynamic Type Construction In Swift"
   s.description  = <<-DESC
                     Allegro allows you to create struct and class instances at runtime.
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/bradhilton/Allegro"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "Brad Hilton" => "brad@skyvive.com" }
-  s.source       = { :git => "https://github.com/bradhilton/Allegro.git", :tag => "1.1.0" }
+  s.source       = { :git => "https://github.com/bradhilton/Allegro.git", :tag => "1.1.1" }
 
   s.ios.deployment_target = "8.0"
   s.osx.deployment_target = "10.9"
