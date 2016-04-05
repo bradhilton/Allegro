@@ -6,6 +6,10 @@
 //  Copyright © 2016 Brad Hilton. All rights reserved.
 //
 
+private var is64BitPlatform: Bool {
+    return sizeof(Int) == sizeof(Int64)
+}
+
 protocol MetadataType {
     static var requiredKind: Metadata.Kind? { get }
     var pointer: UnsafePointer<Int> { get }
@@ -117,6 +121,8 @@ struct Metadata : MetadataType {
     
     struct Struct : NominalType {
         
+        static var requiredKind = Kind.Struct
+        
         let pointer: UnsafePointer<Int>
         
         var nominalTypeDescriptor: NominalTypeDescriptor {
@@ -126,6 +132,8 @@ struct Metadata : MetadataType {
     }
     
     struct Class : NominalType {
+        
+        static var requiredKind = Kind.Class
         
         let pointer: UnsafePointer<Int>
         

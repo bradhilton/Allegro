@@ -23,11 +23,31 @@ struct Person : Equatable {
 
 }
 
-class Base {}
-
-class Sub : Base {}
-
 func ==(lhs: Person, rhs: Person) -> Bool {
+    return lhs.firstName == rhs.firstName && lhs.lastName == rhs.lastName && lhs.age == rhs.age
+}
+
+class ReferencePerson : Initializable, Equatable {
+    
+    var firstName: String
+    var lastName: String
+    var age: Int
+    
+    required init() {
+        self.firstName = ""
+        self.lastName = ""
+        self.age = 0
+    }
+    
+    init(firstName: String, lastName: String, age: Int) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+    }
+    
+}
+
+func ==(lhs: ReferencePerson, rhs: ReferencePerson) -> Bool {
     return lhs.firstName == rhs.firstName && lhs.lastName == rhs.lastName && lhs.age == rhs.age
 }
 
@@ -40,6 +60,20 @@ class Tests: XCTestCase {
                     (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
                 }
                 let other = Person(firstName: "Brad", lastName: "Hilton", age: 27)
+                XCTAssert(person == other)
+            } catch {
+                XCTFail(String(error))
+            }
+        }
+    }
+    
+    func testConstructReferenceType() {
+        for _ in 0..<1000 {
+            do {
+                let person: ReferencePerson = try constructType {
+                    (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
+                }
+                let other = ReferencePerson(firstName: "Brad", lastName: "Hilton", age: 27)
                 XCTAssert(person == other)
             } catch {
                 XCTFail(String(error))
