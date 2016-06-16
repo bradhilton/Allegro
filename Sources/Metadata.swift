@@ -220,8 +220,7 @@ struct AnyExistentialContainer {
     }
     
     var any: Any {
-        var copy = self
-        return withUnsafePointer(&copy) { UnsafePointer<Any>($0).memory }
+        return unsafeBitCast(self, Any.self)
     }
     
 }

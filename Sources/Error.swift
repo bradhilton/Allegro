@@ -8,7 +8,6 @@
 
 public enum Error : ErrorType, CustomStringConvertible {
     
-    case NotStruct(type: Any.Type)
     case NotStructOrClass(type: Any.Type)
     case ClassNotInitializable(type: Any.Type)
     case ValueIsNotOfType(value: Any, type: Any.Type)
@@ -21,7 +20,6 @@ public enum Error : ErrorType, CustomStringConvertible {
     
     var caseDescription: String {
         switch self {
-        case .NotStruct(type: let type): return "\(type) is not a struct"
         case .NotStructOrClass(type: let type): return "\(type) is not a struct or class"
         case .ClassNotInitializable(type: let type): return "Class type \(type) cannot be constructed because it does not conform to Initializable"
         case .ValueIsNotOfType(value: let value, type: let type): return "Cannot set value of type \(value.dynamicType) as \(type)"

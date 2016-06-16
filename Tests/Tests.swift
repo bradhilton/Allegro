@@ -67,21 +67,6 @@ class Tests: XCTestCase {
         }
     }
     
-    func testConstructAnonymousType() {
-        for _ in 0..<1000 {
-            do {
-                let any: Any = try constructType(Person.self) {
-                    (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
-                }
-                guard let person = any as? Person else { return XCTFail() }
-                let other = Person(firstName: "Brad", lastName: "Hilton", age: 27)
-                XCTAssert(person == other)
-            } catch {
-                XCTFail(String(error))
-            }
-        }
-    }
-    
     func testConstructReferenceType() {
         for _ in 0..<1000 {
             do {

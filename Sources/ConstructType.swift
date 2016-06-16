@@ -22,15 +22,6 @@ public func constructType<T>(constructor: Field throws -> Any) throws -> T {
     }
 }
 
-/// Create an anonymous struct with a constructor method. Return a value of `field.type` for each field.
-public func constructType(type: Any.Type, constructor: Field throws -> Any) throws -> Any {
-    let size = Metadata(type: type).valueWitnessTable.size / sizeof(Int)
-    var pointer = UnsafeMutablePointer<Int>.alloc(size)
-    var values = [Any]()
-    try constructType(&pointer, values: &values, fields: fieldsForType(type), constructor: constructor)
-    return AnyExistentialContainer(type: type, pointer: pointer).any
-}
-
 private func constructValueType<T>(constructor: Field throws -> Any) throws -> T {
     guard Metadata(type: T.self)?.kind == .Struct else { throw Error.NotStructOrClass(type: T.self) }
     let pointer = UnsafeMutablePointer<T>.alloc(1)
