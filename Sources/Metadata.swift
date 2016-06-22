@@ -80,6 +80,14 @@ extension NominalType {
         }
     }
     
+    var fieldOffsets: [Int]? {
+        let vectorOffset = nominalTypeDescriptor.fieldOffsetVectorOffset
+        guard vectorOffset != 0 else { return nil }
+        return (0..<nominalTypeDescriptor.numberOfFields).map {
+            pointer[vectorOffset + $0]
+        }
+    }
+    
 }
 
 struct Metadata : MetadataType {
@@ -158,6 +166,14 @@ struct ValueWitnessTable {
         return pointer[17]
     }
     
+    private var alignmentMask: Int {
+        return 0x0FFFF
+    }
+    
+    var align: Int {
+        return (pointer[18] & alignmentMask) + 1
+    }
+    
     var stride: Int {
         return pointer[19]
     }
@@ -181,7 +197,11 @@ struct NominalTypeDescriptor {
     }
     
     var numberOfFields: Int {
-        return Int(UnsafePointer<Int8>(pointer.advancedBy(2)).memory)
+        return Int(UnsafePointer<Int8>(pointer.advancedBy(2))[0])
+    }
+    
+    var fieldOffsetVectorOffset: Int {
+        return Int(UnsafePointer<Int8>(pointer.advancedBy(2))[4])
     }
     
     var fieldNames: [String] {
@@ -210,9 +230,9 @@ struct AnyExistentialContainer {
     var buffer: (Int, Int, Int)
     var type: Any.Type
     
-    init(type: Any.Type, pointer: UnsafePointer<Int>) {
+    init(type: Any.Type, pointer: UnsafePointer<UInt8>) {
         self.type = type
-        if wordSizeForType(type) <= 3 {
+        if sizeof(type) <= 3 * sizeof(Int) {
             self.buffer = UnsafePointer<(Int, Int, Int)>(pointer).memory
         } else {
             self.buffer = (pointer.hashValue, 0, 0)

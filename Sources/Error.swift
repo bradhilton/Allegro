@@ -13,6 +13,7 @@ public enum Error : ErrorType, CustomStringConvertible {
     case ValueIsNotOfType(value: Any, type: Any.Type)
     case InstanceHasNoKey(type: Any.Type, key: String)
     case RequiredValueMissing(key: String)
+    case Unexpected
     
     public var description: String {
         return "Allegro Error: \(caseDescription)"
@@ -25,6 +26,7 @@ public enum Error : ErrorType, CustomStringConvertible {
         case .ValueIsNotOfType(value: let value, type: let type): return "Cannot set value of type \(value.dynamicType) as \(type)"
         case .InstanceHasNoKey(type: let type, key: let key): return "Instance of type \(type) has no key \(key)"
         case .RequiredValueMissing(key: let key): return "No value found for required key \"\(key)\" in dictionary"
+        case .Unexpected: return "An unexpected error has occurred"
         }
     }
     

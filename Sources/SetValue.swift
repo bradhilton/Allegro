@@ -29,9 +29,8 @@ private func fieldForType(type: Any.Type, withName name: String) throws -> Field
     return field
 }
 
-private func setValue(value: Any, forKey key: String, field: Field, storage: UnsafeMutablePointer<Int>) throws {
-    var storage = storage.advancedBy(field.offset)
+private func setValue(value: Any, forKey key: String, field: Field, storage: UnsafeMutablePointer<UInt8>) throws {
     guard instanceValue(value, isOfType: field.type) else { throw Error.ValueIsNotOfType(value: value, type: field.type) }
     var copy: Any = value
-    storage.consumeBuffer(bufferForInstance(&copy))
+    storage.advancedBy(field.offset).consumeBuffer(bytesForInstance(&copy))
 }

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import Allegro
+@testable import Allegro
 
 struct Person : Equatable {
     
@@ -53,6 +53,22 @@ func ==(lhs: ReferencePerson, rhs: ReferencePerson) -> Bool {
 
 class Tests: XCTestCase {
     
+    func testMemoryProperties() {
+        func testMemoryProperties<T>(type: T.Type) {
+            XCTAssert(alignof((T.self as Any.Type)) == Swift.alignof(T.self))
+            XCTAssert(sizeof((T.self as Any.Type)) == Swift.sizeof(T.self))
+            XCTAssert(strideof((T.self as Any.Type)) == Swift.strideof(T.self))
+        }
+        testMemoryProperties(Bool)
+        testMemoryProperties(UInt8)
+        testMemoryProperties(UInt16)
+        testMemoryProperties(UInt32)
+        testMemoryProperties(Float)
+        testMemoryProperties(Double)
+        testMemoryProperties(String)
+        testMemoryProperties(Array<Int>)
+    }
+    
     func testConstructType() {
         for _ in 0..<1000 {
             do {
@@ -64,6 +80,52 @@ class Tests: XCTestCase {
             } catch {
                 XCTFail(String(error))
             }
+        }
+    }
+    
+    func testConstructFlags() {
+        struct Flags {
+            let x: Bool
+            let y: Bool?
+            let z: (Bool, Bool)
+        }
+        do {
+            let flags: Flags = try constructType([
+                    "x": false,
+                    "y": Optional<Bool>(),
+                    "z": (true, false)
+                ])
+            XCTAssert(!flags.x)
+            XCTAssert(flags.y == nil)
+            XCTAssert(flags.z == (true, false))
+        } catch {
+            XCTFail(String(error))
+        }
+    }
+    
+    func testConstructObject() {
+        struct Object {
+            let flag: Bool
+            let pair: (UInt8, UInt8)
+            let float: Float?
+            let integer: Int
+            let string: String
+        }
+        do {
+            let object: Object = try constructType([
+                    "flag": true,
+                    "pair": (UInt8(1), UInt8(2)),
+                    "float": Optional(Float(89.0)),
+                    "integer": 123,
+                    "string": "Hello, world"
+                ])
+            XCTAssert(object.flag)
+            XCTAssert(object.pair == (1, 2))
+            XCTAssert(object.float == 89.0)
+            XCTAssert(object.integer == 123)
+            XCTAssert(object.string == "Hello, world")
+        } catch {
+            XCTFail(String(error))
         }
     }
     
@@ -98,7 +160,6 @@ class Tests: XCTestCase {
         } catch {
             XCTFail(String(error))
         }
-        print(properties)
     }
     
     func testSetValueForKeyOfInstance() {

@@ -19,13 +19,13 @@ extension Advancable {
 extension UnsafePointer : Advancable {}
 extension UnsafeMutablePointer : Advancable {}
 
-func bufferForInstance(inout instance: Any) -> UnsafeBufferPointer<Int> {
-    let size = wordSizeForType(instance.dynamicType)
-    let pointer: UnsafePointer<Int> = withUnsafePointer(&instance) { pointer in
-        if size <= 3 {
-            return UnsafePointer<Int>(pointer)
+func bytesForInstance(inout instance: Any) -> UnsafeBufferPointer<UInt8> {
+    let size = sizeofValue(instance)
+    let pointer: UnsafePointer<UInt8> = withUnsafePointer(&instance) { pointer in
+        if size <= 3 * sizeof(Int) {
+            return UnsafePointer(pointer)
         } else {
-            return UnsafePointer<Int>(bitPattern: UnsafePointer<Int>(pointer)[0])
+            return UnsafePointer(bitPattern: UnsafePointer<Int>(pointer)[0])
         }
     }
     return UnsafeBufferPointer(start: pointer, count: size)
@@ -33,18 +33,11 @@ func bufferForInstance(inout instance: Any) -> UnsafeBufferPointer<Int> {
 
 extension UnsafeMutablePointer {
     
-    mutating func consumeBuffer(buffer: UnsafeBufferPointer<Int>) {
-        var pointer = UnsafeMutablePointer<Int>(self)
-        buffer.forEach {
-            pointer.memory = $0
-            pointer.advance()
+    func consumeBuffer(buffer: UnsafeBufferPointer<UInt8>) {
+        let pointer = UnsafeMutablePointer<UInt8>(self)
+        for (i, byte) in buffer.enumerate() {
+            pointer[i] = byte
         }
-        self = UnsafeMutablePointer(pointer)
     }
     
-}
-
-func wordSizeForType(type: Any.Type) -> Int {
-    let size = Metadata(type: type).valueWitnessTable.size
-    return (size / sizeof(Int)) + (size % sizeof(Int) == 0 ? 0 : 1)
 }

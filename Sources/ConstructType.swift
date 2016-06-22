@@ -26,26 +26,24 @@ private func constructValueType<T>(constructor: Field throws -> Any) throws -> T
     guard Metadata(type: T.self)?.kind == .Struct else { throw Error.NotStructOrClass(type: T.self) }
     let pointer = UnsafeMutablePointer<T>.alloc(1)
     defer { pointer.dealloc(1) }
-    var storage = UnsafeMutablePointer<Int>(pointer)
     var values = [Any]()
-    try constructType(&storage, values: &values, fields: fieldsForType(T.self), constructor: constructor)
+    try constructType(UnsafeMutablePointer<UInt8>(pointer), values: &values, fields: fieldsForType(T.self), constructor: constructor)
     return pointer.memory
 }
 
 private func constructReferenceType<T>(value: T, constructor: Field throws -> Any) throws -> T {
     var copy = value
-    var storage = mutableStorageForInstance(&copy)
     var values = [Any]()
-    try constructType(&storage, values: &values, fields: fieldsForType(T.self), constructor: constructor)
+    try constructType(mutableStorageForInstance(&copy), values: &values, fields: fieldsForType(T.self), constructor: constructor)
     return copy
 }
 
-private func constructType(inout storage: UnsafeMutablePointer<Int>, inout values: [Any], fields: [Field], constructor: Field throws -> Any) throws {
+private func constructType(storage: UnsafeMutablePointer<UInt8>, inout values: [Any], fields: [Field], constructor: Field throws -> Any) throws {
     for field in fields {
         var value = try constructor(field)
         guard instanceValue(value, isOfType: field.type) else { throw Error.ValueIsNotOfType(value: value, type: field.type) }
         values.append(value)
-        storage.consumeBuffer(bufferForInstance(&value))
+        storage.advancedBy(field.offset).consumeBuffer(bytesForInstance(&value))
     }
 }
 

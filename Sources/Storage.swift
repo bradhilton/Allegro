@@ -10,28 +10,28 @@ func mutableStorageForInstance(inout instance: Any) -> UnsafeMutablePointer<Int>
     return UnsafeMutablePointer<Int>(storageForInstance(&instance))
 }
 
-func storageForInstance(inout instance: Any) -> UnsafePointer<Int> {
+func storageForInstance(inout instance: Any) -> UnsafePointer<UInt8> {
     return withUnsafePointer(&instance) { pointer in
         if instance is AnyObject {
-            return UnsafePointer<Int>(bitPattern: UnsafePointer<Int>(pointer).memory).advancedBy(2)
-        } else if wordSizeForType(instance.dynamicType) <= 3 {
-            return UnsafePointer<Int>(pointer)
+            return UnsafePointer(bitPattern: UnsafePointer<Int>(pointer).memory)
+        } else if sizeofValue(instance) <= 3 * sizeof(Int) {
+            return UnsafePointer(pointer)
         } else {
-            return UnsafePointer<Int>(bitPattern: UnsafePointer<Int>(pointer).memory)
+            return UnsafePointer(bitPattern: UnsafePointer<Int>(pointer).memory)
         }
     }
 }
 
-func mutableStorageForInstance<T>(inout instance: T) -> UnsafeMutablePointer<Int> {
-    return UnsafeMutablePointer<Int>(storageForInstance(&instance))
+func mutableStorageForInstance<T>(inout instance: T) -> UnsafeMutablePointer<UInt8> {
+    return UnsafeMutablePointer(storageForInstance(&instance))
 }
 
-func storageForInstance<T>(inout instance: T) -> UnsafePointer<Int> {
+func storageForInstance<T>(inout instance: T) -> UnsafePointer<UInt8> {
     return withUnsafePointer(&instance) { pointer in
         if instance is AnyObject {
-            return UnsafePointer<Int>(bitPattern: UnsafePointer<Int>(pointer).memory).advancedBy(2)
+            return UnsafePointer(bitPattern: UnsafePointer<Int>(pointer).memory)
         } else {
-            return UnsafePointer<Int>(pointer)
+            return UnsafePointer(pointer)
         }
     }
 }
