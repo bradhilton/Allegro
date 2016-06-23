@@ -1,10 +1,32 @@
 //
-//  TypeConstructor.swift
+//  ConstructType.swift
 //  Allegro
 //
 //  Created by Bradley Hilton on 3/17/16.
 //  Copyright © 2016 Brad Hilton. All rights reserved.
 //
+
+
+/// Create a class or struct with a constructor method. Return a value of `field.type` for each field. Classes must conform to `Initializable`.
+public func constructType(type: Any.Type, constructor: Field throws -> Any) throws -> Any {
+    return try anyConstructor(type).constructAnyType(constructor)
+}
+
+protocol AnyConstructor {
+    static func constructAnyType(constructor: Field throws -> Any) throws -> Any
+}
+
+struct _AnyConstructor<T> : AnyConstructor {
+    static func constructAnyType(constructor: Field throws -> Any) throws -> Any {
+        let result: T = try constructType(constructor)
+        return result
+    }
+}
+
+func anyConstructor(type: Any.Type) -> AnyConstructor.Type {
+    unsafeBitCast(_AnyConstructor<Void>.self as Any.Type, UnsafeMutablePointer<Int>.self)[3] = unsafeBitCast(type, Int.self)
+    return _AnyConstructor<Void>.self
+}
 
 public protocol Initializable : class {
     init()

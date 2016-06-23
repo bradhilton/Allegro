@@ -83,6 +83,29 @@ class Tests: XCTestCase {
         }
     }
     
+    func testConstructAnyType() {
+        do {
+            let type: Any.Type = Person.self
+            let person: Any = try constructType(type) {
+                (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
+            }
+            let other = Person(firstName: "Brad", lastName: "Hilton", age: 27)
+            XCTAssert(person as! Person == other)
+        } catch {
+            XCTFail(String(error))
+        }
+        do {
+            let type: Any.Type = ReferencePerson.self
+            let person: Any = try constructType(type) {
+                (["firstName" : "Brad", "lastName": "Hilton", "age": 27] as [String : Any])[$0.name]!
+            }
+            let other = ReferencePerson(firstName: "Brad", lastName: "Hilton", age: 27)
+            XCTAssert(person as! ReferencePerson == other)
+        } catch {
+            XCTFail(String(error))
+        }
+    }
+    
     func testConstructFlags() {
         struct Flags {
             let x: Bool
