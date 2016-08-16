@@ -51,7 +51,9 @@ func instanceValue(instance: Any, isOfType type: Any.Type) -> Bool {
         return false
     }
     while let parentClass = subclass.superclass {
-        if parentClass == superclass {
+        if parentClass == superclass
+        || parentClass.name == superclass.name // FIXME: Hack to circumvent Foundation
+        {
             return true
         }
         subclass = parentClass
@@ -151,6 +153,10 @@ struct Metadata : MetadataType {
         
         var nominalTypeDescriptor: NominalTypeDescriptor {
             return NominalTypeDescriptor(pointer: UnsafePointer(bitPattern: pointer[is64BitPlatform ? 8 : 11]))
+        }
+        
+        var name: String {
+            return String(unsafeBitCast(pointer, Any.Type.self))
         }
         
     }
