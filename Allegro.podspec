@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
                    DESC
   s.homepage     = "https://github.com/bradhilton/Allegro"
   s.license      = { :type => "MIT", :file => "LICENSE" }
-  s.author       = { "Brad Hilton" => "brad@skyvive.com" }
+  s.author       = { "Brad Hilton" => "brad.hilton.nw@gmail.com" }
   s.source       = { :git => "https://github.com/bradhilton/Allegro.git", :tag => "1.2.1" }
 
   s.ios.deployment_target = "8.0"
